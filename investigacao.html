@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investigação - MicroLab Assist</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
+    .container { width: 100%; max-width: 600px; }
+    .header { text-align: center; margin-bottom: 22px; }
+    .title {
+      font-size: 1.9rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #22d3ee, #67e8f9);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: #94a3b8; margin-top: 4px; font-size: 1rem; }
+    .card {
+      background: #1e2937;
+      border: 1px solid #334155;
+      border-radius: 15px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+    .card h2 {
+      color: #67e8f9;
+      font-size: 1.22rem;
+      margin-bottom: 12px;
+      border-left: 5px solid #22d3ee;
+      padding-left: 12px;
+    }
+    .material {
+      background: #0f172a;
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.35rem;
+      color: #67e8f9;
+      font-weight: bold;
+    }
+    .result-item {
+      background: #0f172a;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* ===================== CARD DE HIPÓTESES (AJUSTADO PARA A FOTO) ===================== */
+
+    .hipotese-item {
+      background: #0f172a;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .hipotese-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    
+   /* Estilo base da foto (adicione transition e cursor) */
+    .hipotese-foto {
+      width: 58px;
+      height: 58px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 2px solid #22d3ee;
+      background-color: #1e2937;
+      flex-shrink: 0;
+  
+  /* EFEITO DE TRANSIÇÃO SUAVE */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  }
+
+  /* O MAGICO: Quando o mouse passa por cima (:hover) */
+  .hipotese-foto:hover {
+  transform: scale(4.5) translate(-15px, 0); /* Aumenta a foto em 4.5x */
+  z-index: 100; /* Faz ela ficar por cima de todo o resto */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8); /* Cria uma sombra bacana */
+  border-color: #67e8f9;
+  }
+    .compatibilidade {
+      color: #22d3ee;
+      font-weight: bold;
+    }
+    .btn-add, .btn {
+      padding: 11px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn-add {
+      display: block;
+      margin: 12px auto 0;
+      background: #22d3ee;
+      color: #0f172a;
+      border: none;
+    }
+    .btn {
+      background: #334155;
+      color: white;
+      border: 1px solid #475569;
+    }
+    .btn:hover, .btn-add:hover { transform: translateY(-3px); }
+    .empty { color: #64748b; font-style: italic; text-align: center; padding: 10px; }
+
+    /* ===================== WIZARD MODAL ===================== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-conteudo {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 720px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+    .modal-header {
+      padding: 20px 25px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .progress {
+      height: 6px;
+      background: #22d3ee;
+      transition: width 0.4s;
+    }
+    .step-content { padding: 25px; }
+    .step-title { font-size: 1.4rem; color: #67e8f9; margin-bottom: 20px; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; margin-bottom: 8px; color: #94a3b8; }
+    .radio-group { display: flex; flex-direction: column; gap: 8px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">MicroLab Assist</h1>
+      <p class="subtitle">Sistema de Apoio para Identificação Bacteriana</p>
+    </div>
+    <div class="card">
+      <h2>Material Biológico</h2>
+      <div class="material" id="material">Carregando...</div>
+    </div>
+
+    <div class="card">
+      <h2>Resultados Conhecidos</h2>
+      <div id="resultadosContainer">
+        <div class="empty" id="emptyMessage">Nenhum resultado informado.</div>
+      </div>
+      <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
+        <label style="font-size: 0.9rem; color: #94a3b8;">Nome do Paciente:</label>
+        <input type="text" id="inputNomePaciente" placeholder="Ex: João Silva" style="width:100%; padding:10px; border-radius:8px; background:#0f172a; color:white; border:1px solid #475569;">
+        <label style="font-size: 0.9rem; color: #94a3b8;">Número do Pedido:</label>
+        <input type="text" id="inputNumeroPedido" placeholder="Ex: 123456" style="width:100%; padding:10px; border-radius:8px; background:#0f172a; color:white; border:1px solid #475569;">
+      </div>
+      <button class="btn-add" onclick="adicionarResultado()">+ Adicionar Resultado</button>
+      <button class="btn" onclick="imprimirRelatorio()" style="margin-top: 10px; width: 100%;">🖨 Gerar Relatório</button>
+    </div>
+
+    <div class="card">
+      <h2>Hipóteses Atuais</h2>
+      <div id="hipotesesContainer">
+        <div class="empty" id="emptyHipoteses">Aguardando resultados laboratoriais.</div>
+      </div>
+    </div>
+
+    <div class="actions" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px;">
+      <button class="btn" onclick="novaInvestigacao()">🔄 Nova Investigação</button>
+      <button class="btn" onclick="salvarCaso()">💾 Salvar</button>
+      <button class="btn" onclick="abrirCaso()">📂 Abrir</button>
+    </div>
+  </div>
+
+  <!-- Modal de Adicionar Resultado (original) -->
+  <div id="modalResultado" class="modal">
+    <div style="background:#0f172a; padding:25px; border-radius:15px; width:100%; max-width:680px; border:1px solid #334155;">
+      <h2 style="color:#67e8f9; text-align:center; margin-bottom:20px;">Adicionar / Editar Resultado</h2>
+      <label style="display:block; margin:15px 0 6px;">Tipo de teste</label>
+      <select id="tipoTeste" style="width:100%; padding:10px; border-radius:8px; background:#1e2937; color:white; border:1px solid #475569;"></select>
+      
+      <label style="display:block; margin:15px 0 6px;">Resultado</label>
+      <select id="resultadoTeste" style="width:100%; padding:10px; border-radius:8px; background:#1e2937; color:white; border:1px solid #475569;"></select>
+      
+      <div style="margin-top:25px; display:flex; gap:10px;">
+        <button onclick="salvarResultado()" style="flex:1; padding:12px; background:#22d3ee; color:#0f172a; border:none; border-radius:8px; font-weight:bold;">Salvar</button>
+        <button onclick="fecharModal()" style="flex:1; padding:12px; background:#334155; color:white; border:none; border-radius:8px;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== WIZARD - APENAS PARA URINA ===================== -->
+  <div id="assistenteModal" class="modal">
+    <div class="modal-conteudo">
+      <div class="modal-header">
+        <h2 id="wizardTitulo">Protocolo de Urinocultura</h2>
+        <button onclick="fecharAssistente()" style="background:none;border:none;color:#94a3b8;font-size:1.6rem;cursor:pointer;">✕</button>
+      </div>
+      <div class="progress" id="progressBar" style="width:33%;"></div>
+      <div class="step-content" id="stepContent"></div>
+
+      <div style="padding:15px 25px; border-top:1px solid #334155; display:flex; justify-content:space-between;">
+        <button id="btnAnterior" class="btn" onclick="anteriorStep()" style="visibility:hidden;">Anterior</button>
+        <button id="btnProximo" class="btn" onclick="proximoStep()" style="background:#22d3ee; color:#0f172a;">Próximo</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/testes.js"></script>
+  <script src="js/bacterias.js"></script>
+  <script src="js/interpretador.js"></script>
+  <script>
+    let resultados = {};
+
+    // ==================== WIZARD PARA URINA ====================
+    let currentStep = 0;
+    let casoAtual = {};
+
+    const urinaSteps = [
+      {
+        titulo: "Etapa 1 — Recepção da Amostra",
+        html: `
+          <div class="step-title">Dados da Coleta</div>
+          <div class="form-group">
+            <label>Tipo de Coleta</label>
+            <div class="radio-group">
+              <label><input type="radio" name="coleta" value="jato"> Jato Médio</label>
+              <label><input type="radio" name="coleta" value="sonda"> Sonda</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Aspecto</label>
+            <div class="radio-group">
+              <label><input type="radio" name="aspecto" value="limpida"> Límpida</label>
+              <label><input type="radio" name="aspecto" value="turva"> Turva</label>
+              <label><input type="radio" name="aspecto" value="hematica"> Hemática</label>
+            </div>
+          </div>
+        `
+      },
+      {
+        titulo: "Etapa 2 — Protocolo Recomendado",
+        html: `
+          <div class="step-title">Próximos Procedimentos</div>
+          <p><strong>Realizar:</strong></p>
+          <ul style="margin:15px 0; line-height:1.8;">
+            <li>✔ Coloração de Gram</li>
+            <li>✔ Semeadura em Ágar Sangue, MacConkey e CLED</li>
+          </ul>
+          <p><strong>Incubação:</strong> 35–37°C por 18–24h</p>
+        `
+      },
+      {
+        titulo: "Etapa 3 — Coloração de Gram",
+        html: `
+          <div class="step-title">Resultado do Gram</div>
+          <div class="form-group">
+            <label>Gram</label>
+            <div class="radio-group">
+              <label><input type="radio" name="gram" value="positivo"> Positivo</label>
+              <label><input type="radio" name="gram" value="negativo"> Negativo</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Morfologia</label>
+            <div class="radio-group">
+              <label><input type="radio" name="forma" value="bacilo"> Bacilo</label>
+              <label><input type="radio" name="forma" value="coco"> Coco</label>
+            </div>
+          </div>
+        `
+      }
+    ];
+
+    function iniciarWizardUrina() {
+      currentStep = 0;
+      casoAtual = { material: "Urina" };
+      document.getElementById("assistenteModal").style.display = "flex";
+      renderWizardStep();
+    }
+
+    function renderWizardStep() {
+      const step = urinaSteps[currentStep];
+      document.getElementById("wizardTitulo").textContent = step.titulo;
+      document.getElementById("stepContent").innerHTML = step.html;
+      document.getElementById("progressBar").style.width = `${((currentStep + 1) / urinaSteps.length) * 100}%`;
+      
+      document.getElementById("btnAnterior").style.visibility = currentStep === 0 ? "hidden" : "visible";
+      document.getElementById("btnProximo").textContent = currentStep === urinaSteps.length - 1 ? "Finalizar" : "Próximo";
+    }
+
+    function proximoStep() {
+      if (currentStep < urinaSteps.length - 1) {
+        currentStep++;
+        renderWizardStep();
+      } else {
+        finalizarWizard();
+      }
+    }
+
+    function anteriorStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        renderWizardStep();
+      }
+    }
+
+    function finalizarWizard() {
+      alert("✅ Protocolo de Urina concluído! Você pode agora adicionar os resultados.");
+      document.getElementById("assistenteModal").style.display = "none";
+    }
+
+    function fecharAssistente() {
+      if (confirm("Deseja sair do protocolo?")) {
+        document.getElementById("assistenteModal").style.display = "none";
+      }
+    }
+
+    // ==================== FUNÇÕES ORIGINAIS AJUSTADAS ====================
+    function carregarMaterial() {
+      const material = sessionStorage.getItem("materialSelecionado") || "Não informado";
+      document.getElementById("material").textContent = material;
+    }
+
+    function iniciarNovoExame() {
+      const material = document.getElementById("material").textContent;
+      if (material === "Urina") {
+        iniciarWizardUrina();
+      } else {
+        alert(`Iniciando investigação direta para ${material}`);
+      }
+    }
+
+    function atualizarResultadosNaTela() {      
+      const container = document.getElementById("resultadosContainer");      
+      container.innerHTML = "";      
+
+      if (Object.keys(resultados).length === 0) {        
+        container.innerHTML = '<div class="empty" id="emptyMessage">Nenhum resultado informado.</div>';        
+        return;        
+      }      
+
+      Object.keys(resultados).forEach(teste => {        
+        const div = document.createElement("div");        
+        div.className = "result-item";        
+        div.innerHTML = `          
+          <div><strong>${teste}:</strong> ${resultados[teste]}</div>          
+          <div>            
+            <button onclick="editarResultado('${teste}')" style="background:#3b82f6; margin-right:5px; padding:5px 8px; border:none; border-radius:5px; color:white; cursor:pointer;">✏</button>            
+            <button onclick="excluirResultado('${teste}')" style="background:#ef4444; padding:5px 8px; border:none; border-radius:5px; color:white; cursor:pointer;">🗑</button>          
+          </div>        
+        `;        
+        container.appendChild(div);      
+      });    
+    }    
+
+    // ==================== FUNÇÃO DE HIPÓTESES (COM IMAGEM) ====================
+    function atualizarHipoteses() {      
+      const container = document.getElementById("hipotesesContainer");      
+      const hipoteses = window.gerarHipoteses ? window.gerarHipoteses(resultados) : [];      
+      container.innerHTML = "";      
+
+      if (hipoteses.length === 0) {        
+        container.innerHTML = '<div class="empty" id="emptyHipoteses">Aguardando resultados laboratoriais.</div>';        
+        return;        
+      }      
+
+      hipoteses.slice(0, 5).forEach(h => {        
+        const div = document.createElement("div");        
+        div.className = "hipotese-item";
+        
+        // Verifica se existe imagem cadastrada no objeto da bactéria, senão usa padrão
+        const fotoUrl = h.imagem || `img/${h.nome.toLowerCase().replace(/ /g, "_")}.jpg`;
+        const fallbackFoto = 'https://via.placeholder.com/60/0f172a/22d3ee?text=Micro';
+
+        div.innerHTML = `          
+          <div class="hipotese-info">
+            <strong style="font-size: 1.05rem;">${h.nome}</strong>
+            <small style="color: #94a3b8;">${h.grupo || ''}</small>
+            <span class="compatibilidade" style="margin-top: 4px;">${h.compatibilidade}% de compatibilidade</span>        
+          </div>
+          <img src="${fotoUrl}" alt="${h.nome}" class="hipotese-foto" onerror="this.onerror=null; this.src='${fallbackFoto}';" />
+        `;        
+        container.appendChild(div);      
+      });    
+    }    
+
+    function atualizarOpcoesModal(testeEmEdicao = null) {      
+      const select = document.getElementById("tipoTeste");      
+      select.innerHTML = '<option value="">Selecione um teste...</option>';      
+
+      if (typeof testesMicrobiologicos !== "undefined") {        
+        testesMicrobiologicos.forEach(t => {          
+          if (!resultados[t.nome] || t.nome === testeEmEdicao) {            
+            const option = document.createElement("option");            
+            option.value = t.nome;            
+            option.textContent = t.nome;            
+            select.appendChild(option);          
+          }        
+        });      
+      }    
+    }    
+
+    function atualizarResultadosPossiveis() {      
+      const testeSelecionado = document.getElementById("tipoTeste").value;      
+      const selectResultado = document.getElementById("resultadoTeste");      
+      selectResultado.innerHTML = "";      
+
+      if (!testeSelecionado) {
+        selectResultado.innerHTML = '<option value="">Selecione um teste primeiro...</option>';
+        return;
+      }
+
+      if (typeof getTesteByNome === "function") {        
+        const test = getTesteByNome(testeSelecionado);        
+        if (test && test.resultadosPossiveis) {          
+          test.resultadosPossiveis.forEach(res => {            
+            const option = document.createElement("option");            
+            option.value = res;            
+            option.textContent = res;            
+            selectResultado.appendChild(option);          
+          });        
+        }      
+      } else if (typeof testesMicrobiologicos !== "undefined") {
+        const test = testesMicrobiologicos.find(t => t.nome === testeSelecionado);
+        if (test && test.resultadosPossiveis) {
+          test.resultadosPossiveis.forEach(res => {            
+            const option = document.createElement("option");            
+            option.value = res;            
+            option.textContent = res;            
+            selectResultado.appendChild(option);          
+          }); 
+        }
+      }   
+    }    
+
+    function adicionarResultado() {      
+      document.getElementById("tipoTeste").disabled = false;
+      atualizarOpcoesModal();      
+      document.getElementById("modalResultado").style.display = "flex";      
+      atualizarResultadosPossiveis();     
+    }    
+
+    function fecharModal() {      
+      document.getElementById("modalResultado").style.display = "none";    
+    }    
+
+    function salvarResultado() {      
+      const teste = document.getElementById("tipoTeste").value;      
+      const resultado = document.getElementById("resultadoTeste").value;      
+
+      if (!teste) {        
+        alert("Selecione um tipo de teste!");        
+        return;      
+      }      
+
+      resultados[teste] = resultado;      
+      atualizarResultadosNaTela();      
+      atualizarHipoteses();      
+      fecharModal();    
+    }    
+
+    function editarResultado(teste) {      
+      atualizarOpcoesModal(teste);      
+      
+      const selectTeste = document.getElementById("tipoTeste");      
+      selectTeste.value = teste;      
+      selectTeste.disabled = true; 
+      
+      atualizarResultadosPossiveis();      
+      
+      const selectResultado = document.getElementById("resultadoTeste");      
+      selectResultado.value = resultados[teste];      
+      
+      document.getElementById("modalResultado").style.display = "flex";    
+    }    
+
+    function excluirResultado(teste) {      
+      if (confirm(`Deseja excluir o teste ${teste}?`)) {        
+        delete resultados[teste];        
+        atualizarResultadosNaTela();        
+        atualizarHipoteses();      
+      }    
+    }    
+
+    function novaInvestigacao() {      
+      if (confirm("Deseja iniciar uma nova investigação?")) window.location.href = "index.html";    
+    }    
+
+    function salvarCaso() {      
+      alert("Investigação salva com sucesso!");    
+    }    
+
+    function abrirCaso() {      
+      alert("Funcionalidade em desenvolvimento.");    
+    }    
+
+    function imprimirRelatorio() {      
+      const nomePaciente = document.getElementById("inputNomePaciente").value.trim() || "Não informado";
+      const numeroPedido = document.getElementById("inputNumeroPedido").value.trim() || "Não informado";
+
+      sessionStorage.setItem("resultadosInvestigacao", JSON.stringify(resultados));      
+      sessionStorage.setItem("nomePaciente", nomePaciente);      
+      sessionStorage.setItem("numeroPedido", numeroPedido);      
+
+      window.open("relatorio.html", "_blank");    
+    }
+    
+    // ==================== INICIALIZAÇÃO ÚNICA DO SISTEMA ====================
+    document.addEventListener("DOMContentLoaded", () => {
+      carregarMaterial();
+      atualizarResultadosNaTela();
+      atualizarHipoteses();
+
+      const selectTeste = document.getElementById("tipoTeste");      
+      if (selectTeste) {        
+        selectTeste.addEventListener("change", atualizarResultadosPossiveis);      
+      }    
+
+      const protocolo = sessionStorage.getItem("mostrarAssistente");
+      if (protocolo === "urina") {
+        iniciarWizardUrina();
+        sessionStorage.removeItem("mostrarAssistente");
+      }
+
+      const actions = document.querySelector(".actions");
+      if (actions) {
+        const novoBtn = document.createElement("button");
+        novoBtn.className = "btn";
+        novoBtn.textContent = "Novo Exame";
+        novoBtn.onclick = iniciarNovoExame;
+        actions.prepend(novoBtn);
+      }
+    });
+/*
+ * Micro Lab Assist
+ * Sistema Especialista para Identificação Microbiológica
+ *
+ * Copyright (C) 2026 Júlio César Martins
+ *
+ * Licensed under the GNU Affero General Public License v3.0
+ *
+ * Repositório:
+ * https://github.com/Corvo-UFMG/MicroLab-Assist
+ */
+</script>
+</body>
+</html>

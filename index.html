@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MicroLab Assist</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+      color: #e2e8f0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #334155;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 500px;
+      padding: 40px 30px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      text-align: center;
+    }
+    .header {
+      margin-bottom: 35px;
+    }
+
+    .title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #22d3ee, #67e8f9);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+
+    .section {
+      margin: 30px 0;
+    }
+
+    .label {
+      display: block;
+      text-align: left;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: #cbd5e1;
+      font-size: 1.1rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #1e2937;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      border-color: #22d3ee;
+      background: #334155;
+    }
+
+    .option input {
+      accent-color: #22d3ee;
+      transform: scale(1.2);
+    }
+
+    .btn {
+      margin-top: 30px;
+      width: 100%;
+      padding: 16px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, #22d3ee, #67e8f9);
+      color: #0f172a;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(34, 211, 238, 0.3);
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #334155, transparent);
+      margin: 25px 0;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+      <h1 class="title">MicroLab Assist</h1>
+      <p class="subtitle">Sistema de Apoio para Identificação Bacteriana</p>
+    </div>
+
+    <hr>
+
+    <div class="section">
+      <h2 class="label">Nova Investigação Microbiológica</h2>
+      
+      <label class="label">Tipo de Material</label>
+      <div class="options">
+        <label class="option">
+          <input type="radio" name="material" value="urina">
+          <span>Urina</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="material" value="sangue">
+          <span>Sangue</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="material" value="escarro">
+          <span>Escarro</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="material" value="fezes">
+          <span>Fezes</span>
+        </label>
+        <label class="option">
+          <input type="radio" name="material" value="liquor">
+          <span>Líquor</span>
+        </label>
+      </div>
+    </div>
+
+    <button class="btn" onclick="iniciarIdentificacao()">
+      Iniciar Identificação
+    </button>
+  </div>
+
+  <script>
+    function iniciarIdentificacao() {
+      const selecionado = document.querySelector('input[name="material"]:checked');
+      
+      if (!selecionado) {
+        alert("Por favor, selecione um tipo de material.");
+        return;
+      }
+
+      const material = selecionado.parentElement.textContent.trim();
+      
+      // Salva o material escolhido para usar na próxima tela
+      sessionStorage.setItem('materialSelecionado', material);
+      
+      // Se for urina, ativa o protocolo
+      if (selecionado.value === "urina") {
+
+    sessionStorage.setItem("mostrarAssistente", "urina");
+}
+
+    // Abre normalmente a investigação
+window.location.href = "investigacao.html";
+    }
+/*
+ * Micro Lab Assist
+ * Sistema Especialista para Identificação Microbiológica
+ *
+ * Copyright (C) 2026 Júlio César Martins
+ *
+ * Licensed under the GNU Affero General Public License v3.0
+ *
+ * Repositório:
+ * https://github.com/Corvo-UFMG/MicroLab-Assist
+ */
+  </script>
+</body>
+</html>

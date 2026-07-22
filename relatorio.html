@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório Oficial - MicroLab Assist</title>
+  <!-- Importação da fonte institucional Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+    font-family: 'Inter', sans-serif;
+    color: #0f172a;
+    background: #fff;
+    line-height: 1.5;
+
+    width: 190mm;          /* largura útil da folha A4 */
+    max-width: 190mm;
+
+    margin: 0 auto;
+    padding: 10mm 0;
+}
+    /* Cabeçalho Institucional */
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    .logo-block {
+      flex-shrink:0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-text h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text p {
+      font-size: 0.8rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .doc-title {
+      flex-shrink:0;
+      text-align: right;
+    }
+
+    .doc-title h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #06b6d4;
+    }
+
+    /* Seções de Dados */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #0f172a;
+      margin: 25px 0 12px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 5px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .info-item {
+      font-size: 0.95rem;
+    }
+
+    .info-item span {
+      font-weight: 600;
+      color: #334155;
+    }
+
+    /* Tabelas Oficiais Fixadas */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      table-layout: fixed; /* Força o alinhamento exato das larguras */
+      margin-top:10px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    /* Ajuste de proporção das colunas */
+    th:first-child, td:first-child { width: 50%; }
+    th:last-child, td:last-child { width: 50%; }
+
+    tr:hover {
+      background-color: #f8fafc;
+    }
+
+    /* Lista de Hipóteses Alinhada */
+    .hipotese-linha {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+
+    .hipotese-linha:first-child {
+      font-weight: 600;
+      background-color: #ecfeff;
+      border-left: 4px solid #06b6d4;
+    }
+
+    .bacteria-grupo {
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: normal;
+    }
+
+    /* Rodapé e Assinatura */
+    .footer-signature {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .linha-assinatura {
+      width: 250px;
+      border-top: 1px solid #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    .footer-signature p {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+
+    /* Botão de Ação */
+    .btn-print {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      padding: 14px 24px;
+      background-color: #0f172a;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: background 0.2s;
+      z-index: 2000;
+    }
+
+    .btn-print:hover {
+      background-color: #1e293b;
+    }
+    @page{
+    size:A4 portrait;
+    margin:10mm;
+   }
+    @media print {
+
+    html{
+        width:210mm;
+        height:297mm;
+    }
+
+    body{
+
+        width:190mm;
+        max-width:190mm;
+
+        margin:0 auto;
+        padding:0;
+
+        background:white;
+
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+
+    }
+
+    .btn-print{
+        display:none !important;
+    }
+
+    table{
+
+        width:100%;
+        table-layout:fixed;
+        border-collapse:collapse;
+
+    }
+
+    th,
+    td{
+
+        overflow-wrap:break-word;
+        word-break:break-word;
+        overflow-wrap:anywhere;
+        padding:8px 10px;
+
+    }
+
+    .header-container,
+    .info-grid,
+    table,
+    section,
+    footer{
+
+        page-break-inside:avoid;
+        break-inside:avoid;
+
+    }
+
+}
+  </style>
+</head>
+<body>
+
+  <!-- Cabeçalho com o Novo Logo Digital -->
+  <header class="header-container">
+    <div class="logo-block">
+      <!-- Logo SVG Minimalista Corporativo -->
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="18" stroke="#0F172A" stroke-width="2.5"/>
+        <circle cx="20" cy="20" r="14" stroke="#06B6D4" stroke-width="1" stroke-dasharray="4 2"/>
+        <path d="M13 24L17.5 15.5L21.5 21L26.5 13.5" stroke="#0F172A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="logo-text">
+        <h1>MicroLab Assist</h1>
+        <p>Análise Computacional de Microrganismos</p>
+      </div>
+    </div>
+    <div class="doc-title">
+      <h2>Laudo de Triagem</h2>
+      <p style="font-size: 0.85rem; color: #64748b;">Uso Interno / Apoio Diagnóstico</p>
+    </div>
+  </header>
+
+  <!-- Grade de Informações Clínicas -->
+  <section class="info-grid">
+    <div class="info-item"><span>Paciente:</span> <div id="relatorioNome" style="display:inline;"></div></div>
+    <div class="info-item"><span>Data de Emissão:</span> <div id="data" style="display:inline;"></div></div>
+    <div class="info-item"><span>Nº Pedido/Exame:</span> <div id="relatorioPedido" style="display:inline;"></div></div>
+    <div class="info-item"><span>Material Biológico:</span> <div id="material" style="display:inline;"></div></div>
+  </section>
+
+  <!-- Seção de Resultados -->
+  <section>
+    <h3 class="section-title">Perfil Fenotípico / Testes Executados</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Ensaio Realizado</th>
+          <th>Resultado Obtido</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaResultados"></tbody>
+    </table>
+  </section>
+
+  <!-- Seção de Hipóteses baseadas nas regras clínicas -->
+  <section>
+    <h3 class="section-title">Modelagem de Compatibilidade Bacteriana</h3>
+    <div id="hipoteses"></div>
+  </section>
+
+  <!-- Rodapé Institucional para Assinatura do Biomédico/Médico -->
+  <footer class="footer-signature">
+    <div class="linha-assinatura"></div>
+    <p>Responsável Técnico</p>
+    <p style="font-size: 0.75rem; margin-top: 2px;">MicroLab Assist - Identificação Automatizada</p>
+  </footer>
+
+  <!-- Botão Executivo de Impressão -->
+  <button class="btn-print" onclick="window.print()">
+    Imprimir Relatório
+  </button>
+
+  <!-- Scripts de Lógica Integrada -->
+  <script src="js/testes.js"></script>  
+  <script src="js/bacterias.js"></script>  
+  <script src="js/interpretador.js"></script>  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Preenchimento de metadados
+      const material = sessionStorage.getItem("materialSelecionado") || "Não informado";
+      document.getElementById("material").textContent = material;
+      document.getElementById("data").textContent = new Date().toLocaleString("pt-BR");
+
+      // 2. Preenchimento de dados do paciente via textContent (Seguro contra XSS)
+      const nome = sessionStorage.getItem("nomePaciente") || "Não informado";
+      const pedido = sessionStorage.getItem("numeroPedido") || "Não informado";
+      document.getElementById("relatorioNome").textContent = nome;
+      document.getElementById("relatorioPedido").textContent = pedido;
+
+      // 3. Renderização da tabela de resultados
+      const resultados = JSON.parse(sessionStorage.getItem("resultadosInvestigacao")) || {};
+      const tabela = document.getElementById("tabelaResultados");
+      
+      for (let teste in resultados) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${teste}</td><td><strong>${resultados[teste]}</strong></td>`;
+        tabela.appendChild(tr);
+      }
+
+      // 4. Execução do algoritmo de hipóteses no escopo do documento
+      const hipotesesDiv = document.getElementById("hipoteses");
+      if (typeof gerarHipoteses === "function") {
+        const lista = gerarHipoteses(resultados);
+        if (lista && lista.length > 0) {
+          lista.slice(0, 5).forEach(h => {
+            hipotesesDiv.innerHTML += `
+              <div class="hipotese-linha">
+                <span>${h.nome} <span class="bacteria-grupo">(${h.grupo || 'Sem grupo'})</span></span>
+                <strong>${h.compatibilidade}%</strong>
+              </div>`;
+          });
+        } else {
+          hipotesesDiv.innerHTML = "<p style='padding:16px; color:#64748b; font-style:italic;'>Nenhuma hipótese correspondente encontrada.</p>";
+        }
+      }
+    });
+/*
+ * Micro Lab Assist
+ * Sistema Especialista para Identificação Microbiológica
+ *
+ * Copyright (C) 2026 Júlio César Martins
+ *
+ * Licensed under the GNU Affero General Public License v3.0
+ *
+ * Repositório:
+ * https://github.com/Corvo-UFMG/MicroLab-Assist
+ */
+  </script>
+</body>
+</html>
