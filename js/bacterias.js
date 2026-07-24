@@ -1294,7 +1294,7 @@ const bacterias = [
       "TSI": "A/A", // Fermenta Sacarose
       "SIM": "Variável/Negativo/Positivo",
       "Vermelho de Metila": "Positivo",
-      "Voges-Proskauer": "Negativo",
+      "Voges-Proskauer": "Variável",
       "Lisina": "Negativo",
       "Ornitina": "Positivo",
       "Arginina": "Negativo",
