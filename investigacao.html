@@ -4,15 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Investigação - MicroLab Assist</title>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-B25XV503XB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-B25XV503XB');
-</script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -231,18 +222,18 @@
         <div class="empty" id="emptyMessage">Nenhum resultado informado.</div>
       </div>
       <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
-        <label style="font-size: 0.9rem; color: #94a3b8;">Nome do Paciente:</label>
+        <label for="inputNomePaciente" style="font-size: 0.9rem; color: #94a3b8;">Nome do Paciente:</label>
         <input type="text" id="inputNomePaciente" placeholder="Ex: João Silva" style="width:100%; padding:10px; border-radius:8px; background:#0f172a; color:white; border:1px solid #475569;">
-        <label style="font-size: 0.9rem; color: #94a3b8;">Número do Pedido:</label>
+        <label for="inputNumeroPedido" style="font-size: 0.9rem; color: #94a3b8;">Número do Pedido:</label>
         <input type="text" id="inputNumeroPedido" placeholder="Ex: 123456" style="width:100%; padding:10px; border-radius:8px; background:#0f172a; color:white; border:1px solid #475569;">
       </div>
       
       <div style="display: flex; gap: 10px; margin-top: 12px;">
-        <button class="btn-add" style="flex: 1; margin: 0;" onclick="adicionarResultado()">+ Adicionar Resultado</button>
-        <button class="btn-add" style="flex: 1; margin: 0; background: #334155; color: #22d3ee; border: 1px solid #22d3ee;" onclick="abrirBacteriasCadastradas()">Bactérias Cadastradas</button>
+        <button type="button" class="btn-add" style="flex: 1; margin: 0;" onclick="adicionarResultado()">+ Adicionar Resultado</button>
+        <button type="button" class="btn-add" style="flex: 1; margin: 0; background: #334155; color: #22d3ee; border: 1px solid #22d3ee;" onclick="abrirBacteriasCadastradas()">Bactérias Cadastradas</button>
       </div>
 
-      <button class="btn" onclick="imprimirRelatorio()" style="margin-top: 10px; width: 100%;">🖨 Gerar Relatório</button>
+      <button type="button" class="btn" onclick="imprimirRelatorio()" style="margin-top: 10px; width: 100%;">🖨 Gerar Relatório</button>
     </div>
 
     <div class="card">
@@ -253,9 +244,9 @@
     </div>
 
     <div class="actions" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px;">
-      <button class="btn" onclick="novaInvestigacao()">🔄 Nova Investigação</button>
-      <button class="btn" onclick="salvarCaso()">💾 Salvar</button>
-      <button class="btn" onclick="abrirCaso()">📂 Abrir</button>
+      <button type="button" class="btn" onclick="novaInvestigacao()">🔄 Nova Investigação</button>
+      <button type="button" class="btn" onclick="salvarCaso()">💾 Salvar</button>
+      <button type="button" class="btn" onclick="abrirCaso()">📂 Abrir</button>
     </div>
   </div>
 
@@ -269,9 +260,9 @@
       <label style="display:block; margin:15px 0 6px;">Resultado</label>
       <select id="resultadoTeste" style="width:100%; padding:10px; border-radius:8px; background:#1e2937; color:white; border:1px solid #475569;"></select>
       
-      <div style="margin-top:25px; display:flex; gap:10px;">
-        <button onclick="salvarResultado()" style="flex:1; padding:12px; background:#22d3ee; color:#0f172a; border:none; border-radius:8px; font-weight:bold;">Salvar</button>
-        <button onclick="fecharModal()" style="flex:1; padding:12px; background:#334155; color:white; border:none; border-radius:8px;">Cancelar</button>
+        <div style="margin-top:25px; display:flex; gap:10px;">
+        <button type="button" onclick="salvarResultado()" style="flex:1; padding:12px; background:#22d3ee; color:#0f172a; border:none; border-radius:8px; font-weight:bold;">Salvar</button>
+        <button type="button" onclick="fecharModal()" style="flex:1; padding:12px; background:#334155; color:white; border:none; border-radius:8px;">Cancelar</button>
       </div>
     </div>
   </div>
@@ -281,7 +272,7 @@
     <div class="modal-conteudo" style="max-width: 750px;">
       <div class="modal-header">
         <h2 id="tituloQtdBacterias" style="color:#67e8f9; font-size: 1.2rem;">Bactérias Cadastradas</h2>
-        <button onclick="fecharBacteriasCadastradas()" style="background:none;border:none;color:#94a3b8;font-size:1.6rem;cursor:pointer;">✕</button>
+        <button type="button" onclick="fecharBacteriasCadastradas()" style="background:none;border:none;color:#94a3b8;font-size:1.6rem;cursor:pointer;">✕</button>
       </div>
       <div class="step-content">
         <div class="modal-bacterias-flex">
@@ -303,14 +294,14 @@
     <div class="modal-conteudo">
       <div class="modal-header">
         <h2 id="wizardTitulo">Protocolo de Urinocultura</h2>
-        <button onclick="fecharAssistente()" style="background:none;border:none;color:#94a3b8;font-size:1.6rem;cursor:pointer;">✕</button>
+        <button type="button" onclick="fecharAssistente()" style="background:none;border:none;color:#94a3b8;font-size:1.6rem;cursor:pointer;">✕</button>
       </div>
       <div class="progress" id="progressBar" style="width:33%;"></div>
       <div class="step-content" id="stepContent"></div>
 
       <div style="padding:15px 25px; border-top:1px solid #334155; display:flex; justify-content:space-between;">
-        <button id="btnAnterior" class="btn" onclick="anteriorStep()" style="visibility:hidden;">Anterior</button>
-        <button id="btnProximo" class="btn" onclick="proximoStep()" style="background:#22d3ee; color:#0f172a;">Próximo</button>
+        <button type="button" id="btnAnterior" class="btn" onclick="anteriorStep()" style="visibility:hidden;">Anterior</button>
+        <button type="button" id="btnProximo" class="btn" onclick="proximoStep()" style="background:#22d3ee; color:#0f172a;">Próximo</button>
       </div>
     </div>
   </div>
@@ -525,19 +516,42 @@
         return;        
       }      
 
-      Object.keys(resultados).forEach(teste => {        
-        const div = document.createElement("div");        
-        div.className = "result-item";        
-        div.innerHTML = `          
-          <div><strong>${teste}:</strong> ${resultados[teste]}</div>          
-          <div>            
-            <button onclick="editarResultado('${teste}')" style="background:#3b82f6; margin-right:5px; padding:5px 8px; border:none; border-radius:5px; color:white; cursor:pointer;">✏</button>            
-            <button onclick="excluirResultado('${teste}')" style="background:#ef4444; padding:5px 8px; border:none; border-radius:5px; color:white; cursor:pointer;">🗑</button>          
-          </div>        
-        `;        
-        container.appendChild(div);      
-      });    
-    }    
+      // Função simples para escapar HTML e evitar injeção
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (s) {
+          return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]);
+        });
+      }
+
+      Object.keys(resultados).forEach(teste => {
+        const div = document.createElement("div");
+        div.className = "result-item";
+
+        const left = document.createElement("div");
+        left.innerHTML = `<strong>${escapeHtml(teste)}:</strong> ${escapeHtml(resultados[teste])}`;
+
+        const right = document.createElement("div");
+
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.style.cssText = "background:#3b82f6; margin-right:5px; padding:5px 8px; border:none; border-radius:5px; color:white; cursor:pointer;";
+        editBtn.textContent = "✏";
+        editBtn.addEventListener("click", () => editarResultado(teste));
+
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.style.cssText = "background:#ef4444; padding:5px 8px; border:none; border-radius:5px; color:white; cursor:pointer;";
+        delBtn.textContent = "🗑";
+        delBtn.addEventListener("click", () => excluirResultado(teste));
+
+        right.appendChild(editBtn);
+        right.appendChild(delBtn);
+
+        div.appendChild(left);
+        div.appendChild(right);
+        container.appendChild(div);
+      });     
+    }     
 
     function atualizarHipoteses() {      
       const container = document.getElementById("hipotesesContainer");      
@@ -549,7 +563,7 @@
         return;        
       }      
 
-      hipoteses.slice(0, 5).forEach(h => {        
+      hipoteses.slice(0, 3).forEach(h => {        
         const div = document.createElement("div");        
         div.className = "hipotese-item";
         
@@ -565,24 +579,30 @@
           <img src="${fotoUrl}" alt="${h.nome}" class="hipotese-foto" onerror="this.onerror=null; this.src='${fallbackFoto}';" />
         `;        
         container.appendChild(div);      
-      });    
-    }    
+      });     
+    }     
 
+    /* =====================================================
+       ATUALIZAÇÃO COM A FUNÇÃO DINÂMICA obterTestesRelevantes
+    ===================================================== */
     function atualizarOpcoesModal(testeEmEdicao = null) {      
       const select = document.getElementById("tipoTeste");      
       select.innerHTML = '<option value="">Selecione um teste...</option>';      
 
-      if (typeof testesMicrobiologicos !== "undefined") {        
-        testesMicrobiologicos.forEach(t => {          
-          if (!resultados[t.nome] || t.nome === testeEmEdicao) {            
-            const option = document.createElement("option");            
-            option.value = t.nome;            
-            option.textContent = t.nome;            
-            select.appendChild(option);          
-          }        
-        });      
-      }    
-    }    
+      // Utiliza a função inteligente de testes.js para listar apenas o que é relevante
+      const listaTestes = (typeof obterTestesRelevantes === "function") 
+        ? obterTestesRelevantes(resultados) 
+        : (typeof testesMicrobiologicos !== "undefined" ? testesMicrobiologicos : []);
+
+      listaTestes.forEach(t => {         
+        if (!resultados[t.nome] || t.nome === testeEmEdicao) {           
+          const option = document.createElement("option");           
+          option.value = t.nome;           
+          option.textContent = t.nome;           
+          select.appendChild(option);         
+        }       
+      });     
+    }     
 
     function atualizarResultadosPossiveis() {      
       const testeSelecionado = document.getElementById("tipoTeste").value;      
@@ -615,18 +635,18 @@
           }); 
         }
       }   
-    }    
+    }     
 
     function adicionarResultado() {      
       document.getElementById("tipoTeste").disabled = false;
       atualizarOpcoesModal();      
       document.getElementById("modalResultado").style.display = "flex";      
       atualizarResultadosPossiveis();     
-    }    
+    }     
 
     function fecharModal() {      
       document.getElementById("modalResultado").style.display = "none";    
-    }    
+    }     
 
     function salvarResultado() {      
       const teste = document.getElementById("tipoTeste").value;      
@@ -641,7 +661,7 @@
       atualizarResultadosNaTela();      
       atualizarHipoteses();      
       fecharModal();    
-    }    
+    }     
 
     function editarResultado(teste) {      
       atualizarOpcoesModal(teste);      
@@ -656,7 +676,7 @@
       selectResultado.value = resultados[teste];      
       
       document.getElementById("modalResultado").style.display = "flex";    
-    }    
+    }     
 
     function excluirResultado(teste) {      
       if (confirm(`Deseja excluir o teste ${teste}?`)) {        
@@ -664,19 +684,19 @@
         atualizarResultadosNaTela();        
         atualizarHipoteses();      
       }    
-    }    
+    }     
 
     function novaInvestigacao() {      
       if (confirm("Deseja iniciar uma nova investigação?")) window.location.href = "index.html";    
-    }    
+    }     
 
     function salvarCaso() {      
       alert("Investigação salva com sucesso!");    
-    }    
+    }     
 
     function abrirCaso() {      
       alert("Funcionalidade em desenvolvimento.");    
-    }    
+    }     
 
     function imprimirRelatorio() {      
       const nomePaciente = document.getElementById("inputNomePaciente").value.trim() || "Não informado";
@@ -710,6 +730,7 @@
         const novoBtn = document.createElement("button");
         novoBtn.className = "btn";
         novoBtn.textContent = "Novo Exame";
+        novoBtn.type = "button";
         novoBtn.onclick = iniciarNovoExame;
         actions.prepend(novoBtn);
       }
