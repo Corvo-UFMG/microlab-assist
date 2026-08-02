@@ -12,99 +12,138 @@
  * https://github.com/Corvo-UFMG/MicroLab-Assist
  */
 function gerarHipoteses(resultados) {
-    if (Object.keys(resultados).length === 0) {
+    if (!resultados || Object.keys(resultados).length === 0) {
         return [];
     }
 
-    // Filtra as bactérias aplicando exclusão absoluta (Gram e Forma errados são eliminados de cara)
-    const bacteriasFiltradas = bacterias.filter(bacteria => {
-        // Se o usuário informou Gram e ele é totalmente oposto ao da bactéria
-        if (resultados["Gram"] && bacteria.caracteristicas["Gram"] && 
-            bacteria.caracteristicas["Gram"] !== "Variável" && 
-            resultados["Gram"] !== bacteria.caracteristicas["Gram"]) {
-            return false; 
-        }
-        // Se o usuário informou Forma e ela é incompatível
-        if (resultados["Forma"] && bacteria.caracteristicas["Forma"] && 
-            resultados["Forma"] !== bacteria.caracteristicas["Forma"]) {
-            return false;
-        }
-        return true;
-    });
+    // 1 - FILTRAGEM INICIAL (Filtra eliminatórios sem derrubar variáveis)
+    let candidatas = aplicarFiltros(resultados);
 
-    const hipoteses = bacteriasFiltradas.map(bacteria => {
-        const compatibilidade = calcularCompatibilidade(
-            resultados,
-            bacteria.caracteristicas
-        );
+    // 2 - CALCULA COMPATIBILIDADE PONDERADA
+    let hipoteses = candidatas.map(bacteria => {
+        let analise = calcularCompatibilidade(resultados, bacteria.caracteristicas);
 
         return {
             nome: bacteria.nome,
             grupo: bacteria.grupo,
             importanciaClinica: bacteria.importanciaClinica,
-            compatibilidade: compatibilidade,
+            compatibilidade: analise.percentual,
+            acertos: analise.acertos,
+            erros: analise.erros,
+            detalhes: analise.detalhes,
             caracteristicas: bacteria.caracteristicas
         };
     });
 
-    // Retorna ordenado pela maior porcentagem e ignora quem zerou
+    // 3 - ORDENAÇÃO E FILTRO DE EXIBIÇÃO
     return hipoteses
         .filter(h => h.compatibilidade > 0)
         .sort((a, b) => b.compatibilidade - a.compatibilidade);
 }
 
-function calcularCompatibilidade(resultadosUsuario, caracteristicasBacteria) {
-    let pontos = 0;
-    let pesoTotal = 0;
+// =====================================================
+// FILTRAGEM MICROBIOLÓGICA
+// =====================================================
+function aplicarFiltros(resultados) {
+    let lista = bacterias;
 
-    Object.keys(resultadosUsuario).forEach(teste => {
-        const resultadoUsuario = resultadosUsuario[teste];
-        const resultadoBacteria = caracteristicasBacteria[teste];
+    Object.keys(resultados).forEach(teste => {
+        let dadosTeste = typeof getTesteByNome === "function" ? getTesteByNome(teste) : null;
+        if (!dadosTeste) return;
 
-        // Se o teste não existe no cadastro da bactéria, pula
-        if (resultadoBacteria === undefined) {
-            return;
-        }
+        let modo = dadosTeste.modo || "pontuacao";
 
-        // REVOLUÇÃO: Busca o peso direto do seu catálogo cadastrado no testes.js!
-        // Se não achar o teste lá por algum motivo, adota peso padrão 1.
-        const dadosDoTeste = typeof window.getTesteByNome === 'function' ? window.getTesteByNome(teste) : null;
-        const peso = dadosDoTeste ? dadosDoTeste.peso : 1;
+        // Aplica filtro rigoroso apenas em testes marcados como "eliminatorio" ou "filtragem"
+        if (modo === "eliminatorio" || modo === "filtragem") {
+            lista = lista.filter(bacteria => {
+                let esperado = bacteria.caracteristicas[teste];
+                let recebido = resultados[teste];
 
-        const resUserNorm = normalizar(resultadoUsuario);
-        const resBacNorm = normalizar(resultadoBacteria);
+                // Se a ficha não tem a propriedade, ou se é Variável/Não se aplica, NÃO elimina!
+                if (!esperado || 
+                    normalizar(esperado) === "variável" || 
+                    normalizar(esperado) === "não se aplica" ||
+                    normalizar(recebido) === "não se aplica") {
+                    return true;
+                }
 
-        // Cenário 1: Se o resultado no banco for "não se aplica" ou "variável", 
-        // esse teste é ignorado no cálculo de peso desta bactéria específica.
-        if (resBacNorm === "não se aplica" || resBacNorm === "variável") {
-            return; 
-        }
+                // Trata variação de "Facultativo" vs "Anaeróbio facultativo"
+                if (teste === "Respiracao") {
+                    if (normalizar(esperado).includes("facultativ") && normalizar(recebido).includes("facultativ")) {
+                        return true;
+                    }
+                }
 
-        // Adiciona o peso do teste executado ao totalizador daquela bactéria
-        pesoTotal += peso;
-
-        // Cenário 2: Comparação exata de resultados positivos/negativos e reações
-        if (resUserNorm === resBacNorm) {
-            pontos += peso;
+                return normalizar(esperado) === normalizar(recebido);
+            });
         }
     });
 
-    if (pesoTotal === 0) {
-        return 0;
-    }
+    return lista;
+}
 
-    // Retorna o valor percentual redondo (0 a 100)
-    return Math.round((pontos / pesoTotal) * 100);
+// =====================================================
+// CÁLCULO DE COMPATIBILIDADE (SCORE)
+// =====================================================
+function calcularCompatibilidade(resultadosUsuario, caracteristicasBacteria) {
+    let pontos = 0;
+    let pesoTotal = 0;
+    let acertos = [];
+    let erros = [];
+    let detalhes = [];
+
+    Object.keys(resultadosUsuario).forEach(teste => {
+        let resultadoUsuario = resultadosUsuario[teste];
+        let resultadoBacteria = caracteristicasBacteria[teste];
+
+        if (resultadoBacteria === undefined) return;
+
+        let dadosTeste = typeof getTesteByNome === "function" ? getTesteByNome(teste) : null;
+        let peso = dadosTeste ? dadosTeste.peso : 1;
+
+        let normBacteria = normalizar(resultadoBacteria);
+        let normUsuario = normalizar(resultadoUsuario);
+
+        // Se o teste for "Não se aplica" na ficha ou no teste, desconsidera do peso total
+        if (normBacteria === "não se aplica" || normUsuario === "não se aplica") {
+            return;
+        }
+
+        pesoTotal += peso;
+
+        // Regra para perfil "Variável" na ficha
+        if (normBacteria === "variável") {
+            pontos += peso; // Aceita como compatível e soma a pontuação
+            acertos.push(teste);
+            detalhes.push({ teste, resultado: resultadoUsuario, status: "compatível (variável)" });
+        } 
+        // Variações do termo "Facultativo" na Respiração
+        else if (teste === "Respiracao" && normBacteria.includes("facultativ") && normUsuario.includes("facultativ")) {
+            pontos += peso;
+            acertos.push(teste);
+            detalhes.push({ teste, resultado: resultadoUsuario, status: "compatível" });
+        }
+        // Match exato
+        else if (normUsuario === normBacteria) {
+            pontos += peso;
+            acertos.push(teste);
+            detalhes.push({ teste, resultado: resultadoUsuario, status: "compatível" });
+        } 
+        // Incompatível
+        else {
+            erros.push(teste);
+            detalhes.push({ teste, esperado: resultadoBacteria, encontrado: resultadoUsuario, status: "incompatível" });
+        }
+    });
+
+    let percentual = pesoTotal > 0 ? Math.round((pontos / pesoTotal) * 100) : 0;
+
+    return { percentual, acertos, erros, detalhes };
 }
 
 function normalizar(valor) {
-    if (!valor) {
-        return "";
-    }
-    return valor
-        .toString()
-        .trim()
-        .toLowerCase();
+    if (!valor) return "";
+    return valor.toString().trim().toLowerCase();
 }
 
 window.gerarHipoteses = gerarHipoteses;
