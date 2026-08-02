@@ -13,233 +13,384 @@
  * https://github.com/Corvo-UFMG/MicroLab-Assist
  */
 const testesMicrobiologicos = [
+
+/* ============================
+   MORFOLOGIA (ELIMINATÓRIOS)
+============================ */
+
 {
     nome: "Gram",
     tipo: "Morfologia",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
     grupo: "Coloração",
-    peso: 5,
-    descricao: "Coloração de Gram - diferencia bactérias Gram positivas e Gram negativas"
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "Coloração de Gram",
+    peso: 100,
+    nivel: 1,
+    modo: "eliminatorio",
+    aplicavelPara: "todos"
 },
+
 {
     nome: "Forma",
     tipo: "Morfologia",
+    grupo: "Morfologia",
     resultadosPossiveis: ["Coco", "Bacilo", "Coccobacilo", "Espirilo", "Espiroqueta"],
-    grupo: "Morfologia",
-    peso: 4,
-    descricao: "Formato celular bacteriano"
+    descricao: "Formato celular",
+    peso: 90,
+    nivel: 1,
+    modo: "eliminatorio",
+    aplicavelPara: "todos"
 },
-{
-    nome: "Catalase",
-    tipo: "Enzimático",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
-    grupo: "Enzimático",
-    peso: 3,
-    descricao: "Detecção da enzima catalase"
-},
-{
-    nome: "Oxidase",
-    tipo: "Enzimático",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
-    grupo: "Enzimático",
-    peso: 5,
-    descricao: "Detecção da citocromo oxidase"
-},
-{
-    nome: "Coagulase",
-    tipo: "Enzimático",
-    resultadosPossiveis: ["Positivo", "Negativo", "Não se aplica"],
-    grupo: "Enzimático",
-    peso: 5,
-    descricao: "Detecção da enzima coagulase (livre ou ligada), usada principalmente para identificar Staphylococcus aureus"
-},
-{
-    nome: "Motilidade",
-    tipo: "Morfologia",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"], // Ajustado de Móvel/Imóvel para bater com o cadastro
-    grupo: "Morfologia",
-    peso: 4,
-    descricao: "Capacidade de movimento bacteriano"
-},
-{
-    nome: "Fermentacao lactose",
-    tipo: "Fermentação",
-    resultadosPossiveis: ["Positivo", "Negativo", "Fraco", "Não se aplica"],
-    grupo: "Metabolismo",
-    peso: 4,
-    descricao: "Fermentação da lactose"
-},
-{
-    nome: "Indol",
-    tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Produção de indol a partir do triptofano"
-},
-{
-    nome: "Vermelho de Metila",
-    tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Teste de Vermelho de Metila - via do ácido misto"
-},
-{
-    nome: "Voges-Proskauer",
-    tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Teste de Voges-Proskauer (VP) - produção de acetoína"
-},
-{
-    nome: "Citrato",
-    tipo: "Metabolismo",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Utilização do citrato como fonte de carbono"
-},
-{
-    nome: "H2S",
-    tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Produção de gás Sulfeto de Hidrogênio"
-},
-{
-    nome: "Urease",
-    tipo: "Enzimático",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Hidrólise da ureia"
-},
-{
-    nome: "TSI",
-    tipo: "Fermentação",
-    resultadosPossiveis: ["A/A", "K/A", "K/K", "A/K", "Inerte"], // Adicionado Inerte para bactérias não fermentadoras
-    grupo: "Fermentação",
-    peso: 4,
-    descricao: "Triple Sugar Iron"
-},
-{
-    nome: "SIM",
-    tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável", "Negativo/Negativo/Negativo"], 
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Sulfeto, Indol e Motilidade"
-},
-{
-    nome: "Hemolise",
-    tipo: "Cultura",
-    resultadosPossiveis: ["Alfa", "Beta", "Gama"],
-    grupo: "Cultura",
-    peso: 2,
-    descricao: "Padrão de hemólise em ágar sangue"
-},
-{
-    nome: "Respiracao",
-    tipo: "Fisiologia",
-    resultadosPossiveis: ["Aeróbio obrigatório", "Anaeróbio obrigatório", "Anaeróbio facultativo", "Microaerófilo", "Aerotolerante", "Facultativo", "Capnofílica"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Classificação respiratória bacteriana"
-},
+
 {
     nome: "Esporos",
     tipo: "Morfologia",
-    resultadosPossiveis: ["Ausente", "Presente"], // Ajustado para corresponder ao "Ausente" no objeto da bactéria
     grupo: "Morfologia",
-    peso: 2,
-    descricao: "Produção de endósporos"
+    resultadosPossiveis: ["Presente", "Ausente"],
+    descricao: "Pesquisa de endósporos",
+    peso: 70,
+    nivel: 1,
+    modo: "filtragem",
+    // Mais relevante para Bacilos Gram-positivos (Bacillus, Clostridium)
+    aplicavelPara: { gram: "Positivo", forma: "Bacilo" }
 },
+
+{
+    nome: "Respiracao",
+    tipo: "Fisiologia",
+    grupo: "Metabolismo",
+    resultadosPossiveis: [
+        "Aeróbio obrigatório",
+        "Anaeróbio obrigatório",
+        "Anaeróbio facultativo",
+        "Microaerófilo",
+        "Aerotolerante",
+        "Facultativo",
+        "Capnofílica"
+    ],
+    descricao: "Tipo respiratório",
+    peso: 60,
+    nivel: 1,
+    modo: "filtragem",
+    aplicavelPara: "todos"
+},
+
+/* ============================
+   TESTES RÁPIDOS
+============================ */
+
+{
+    nome: "Oxidase",
+    tipo: "Enzimático",
+    grupo: "Enzimático",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "Citocromo oxidase",
+    peso: 50,
+    nivel: 2,
+    modo: "filtragem",
+    aplicavelPara: "todos" // Fundamental tanto para Cocos (Neisseria) quanto Bacilos (Pseudomonas, Enterobacterias)
+},
+
+{
+    nome: "Catalase",
+    tipo: "Enzimático",
+    grupo: "Enzimático",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "Catalase",
+    peso: 30,
+    nivel: 2,
+    modo: "filtragem",
+    aplicavelPara: "todos" // Diferencia Staphylococcus de Streptococcus e Bacillus de Clostridium
+},
+
+{
+    nome: "Coagulase",
+    tipo: "Enzimático",
+    grupo: "Enzimático",
+    resultadosPossiveis: ["Positivo", "Negativo", "Não se aplica"],
+    descricao: "Coagulase",
+    peso: 60,
+    nivel: 2,
+    modo: "filtragem",
+    // Teste chave para Staphylococcus
+    aplicavelPara: { gram: "Positivo", forma: "Coco" }
+},
+
+{
+    nome: "Hemolise",
+    tipo: "Cultura",
+    grupo: "Cultura",
+    resultadosPossiveis: ["Alfa", "Beta", "Gama"],
+    descricao: "Hemólise em Ágar Sangue",
+    peso: 10,
+    nivel: 2,
+    modo: "confirmatorio",
+    aplicavelPara: "todos"
+},
+
+/* ============================
+   METABOLISMO
+============================ */
+
+{
+    nome: "Fermentacao lactose",
+    tipo: "Fermentação",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Fraco", "Não se aplica"],
+    descricao: "Fermentação da lactose",
+    peso: 45,
+    nivel: 3,
+    modo: "filtragem",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "Motilidade",
+    tipo: "Morfologia",
+    grupo: "Morfologia",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "Motilidade",
+    peso: 35,
+    nivel: 3,
+    modo: "pontuacao",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "Indol",
+    tipo: "Bioquímico",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "Produção de Indol",
+    peso: 35,
+    nivel: 3,
+    modo: "pontuacao",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "Citrato",
+    tipo: "Metabolismo",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "Utilização de Citrato",
+    peso: 35,
+    nivel: 3,
+    modo: "pontuacao",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "Urease",
+    tipo: "Enzimático",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "Hidrólise da Ureia",
+    peso: 30,
+    nivel: 3,
+    modo: "pontuacao",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "TSI",
+    tipo: "Fermentação",
+    grupo: "Fermentação",
+    resultadosPossiveis: ["A/A", "K/A", "K/K", "A/K", "Inerte"],
+    descricao: "Triple Sugar Iron",
+    peso: 45,
+    nivel: 3,
+    modo: "pontuacao",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "H2S",
+    tipo: "Bioquímico",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "Produção de H₂S",
+    peso: 30,
+    nivel: 3,
+    modo: "pontuacao",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "Vermelho de Metila",
+    tipo: "Bioquímico",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "MR",
+    peso: 20,
+    nivel: 4,
+    modo: "confirmatorio",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "Voges-Proskauer",
+    tipo: "Bioquímico",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável"],
+    descricao: "VP",
+    peso: 20,
+    nivel: 4,
+    modo: "confirmatorio",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "Lisina",
+    tipo: "Bioquímico",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável", "Não se aplica"],
+    descricao: "LDC",
+    peso: 25,
+    nivel: 4,
+    modo: "confirmatorio",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
+{
+    nome: "Ornitina",
+    tipo: "Bioquímico",
+    grupo: "Metabolismo",
+    resultadosPossiveis: ["Positivo", "Negativo", "Variável", "Não se aplica"],
+    descricao: "ODC",
+    peso: 25,
+    nivel: 4,
+    modo: "confirmatorio",
+    aplicavelPara: { gram: "Negativo", forma: ["Bacilo", "Coccobacilo"] }
+},
+
 {
     nome: "DNase",
     tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo"], 
     grupo: "Metabolismo",
-    peso: 4,
-    descricao: "Hidrólise do ácido desoxirribonucleico (DNA)"
+    resultadosPossiveis: ["Positivo", "Negativo"],
+    descricao: "DNase",
+    peso: 15,
+    nivel: 4,
+    modo: "confirmatorio",
+    // Utilizado em Staphylococcus e Serratia
+    aplicavelPara: "todos"
 },
+
 {
     nome: "Bile Esculina",
     tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Não se aplica"],
     grupo: "Metabolismo",
-    peso: 4,
-    descricao: "Capacidade de crescer e hidrolisar a esculina na presença de bile (Diferencial para Enterococcus)"
-  },
-  {
+    resultadosPossiveis: ["Positivo", "Negativo", "Não se aplica"],
+    descricao: "Bile Esculina",
+    peso: 35,
+    nivel: 4,
+    modo: "pontuacao",
+    // Teste chave para Cocos Gram-positivos (Enterococcus / Streptococcus Grupo D)
+    aplicavelPara: { gram: "Positivo", forma: "Coco" }
+},
+
+{
     nome: "PYR",
     tipo: "Enzimático",
-    resultadosPossiveis: ["Positivo", "Negativo", "Não se aplica"],
     grupo: "Enzimático",
-    peso: 4,
-    descricao: "Detecção da enzima L-pirrolidonil arylamidase (Positivo em S. pyogenes e Enterococcus)"
-  },
-  {
-    nome: "Lisina",
-    tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável", "Não se aplica"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Descarboxilação da Lisina (LDC)"
-  },
-  {
-    nome: "Ornitina",
-    tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Variável", "Não se aplica"],
-    grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Descarboxilação da Ornitina (ODC)"
-  },
-  {
+    resultadosPossiveis: ["Positivo", "Negativo", "Não se aplica"],
+    descricao: "PYR",
+    peso: 35,
+    nivel: 4,
+    modo: "pontuacao",
+    // Diferencial para Enterococcus e Streptococcus pyogenes
+    aplicavelPara: { gram: "Positivo", forma: "Coco" }
+},
+
+/* ============================
+   ANTIMICROBIANOS
+============================ */
+
+{
     nome: "Novobiocina",
     tipo: "Sensibilidade",
-    resultadosPossiveis: ["Sensível", "Resistente", "Não se aplica"],
     grupo: "Antimicrobianos",
-    peso: 5,
-    descricao: "Resistência à Novobiocina (Diferencial para Staphylococcus saprophyticus)"
-  },
-  {
+    resultadosPossiveis: ["Sensível", "Resistente", "Não se aplica"],
+    descricao: "Novobiocina",
+    peso: 50,
+    nivel: 5,
+    modo: "pontuacao",
+    // Diferencial para Staphylococcus saprophyticus
+    aplicavelPara: { gram: "Positivo", forma: "Coco" }
+},
+
+{
     nome: "Optoquina",
     tipo: "Sensibilidade",
-    resultadosPossiveis: ["Sensível", "Resistente", "Não se aplica"],
     grupo: "Antimicrobianos",
-    peso: 5,
-    descricao: "Sensibilidade à Optoquina (Diferencial para Streptococcus pneumoniae)"
-  },
+    resultadosPossiveis: ["Sensível", "Resistente", "Não se aplica"],
+    descricao: "Optoquina",
+    peso: 50,
+    nivel: 5,
+    modo: "pontuacao",
+    // Diferencial para Streptococcus pneumoniae
+    aplicavelPara: { gram: "Positivo", forma: "Coco" }
+},
+
 {
     nome: "Maltose",
     tipo: "Bioquímico",
-    resultadosPossiveis: ["Positivo", "Negativo", "Não se aplica"],
     grupo: "Metabolismo",
-    peso: 3,
-    descricao: "Teste de acidificação/fermentação da maltose. Essencial para diferenciar Neisseria meningitidis (+) de Neisseria gonorrhoeae (-)."
+    resultadosPossiveis: ["Positivo", "Negativo", "Não se aplica"],
+    descricao: "Fermentação da Maltose",
+    peso: 40,
+    nivel: 5,
+    modo: "pontuacao",
+    // Utilizado na diferenciação de Neisseria spp. (Cocos Gram-negativos)
+    aplicavelPara: { gram: "Negativo", forma: "Coco" }
 }
+
 ];
 
-function getTesteByNome(nome){
-    return testesMicrobiologicos.find(
-        teste => teste.nome === nome
-    );
+/* =====================================================
+   FUNÇÃO AUXILIAR DE FILTRAGEM DINÂMICA PARA A INTERFACE
+===================================================== */
+
+/**
+ * Retorna apenas os testes relevantes com base no Gram e Forma já selecionados.
+ * @param {Object} resultadosAtuais - Objeto com os testes preenchidos (ex: { Gram: "Positivo", Forma: "Coco" })
+ * @returns {Array} Lista de testes recomendados para exibir ao usuário.
+ */
+function obterTestesRelevantes(resultadosAtuais) {
+    if (!resultadosAtuais) return testesMicrobiologicos;
+
+    const gramAtual = resultadosAtuais["Gram"];
+    const formaAtual = resultadosAtuais["Forma"];
+
+    return testesMicrobiologicos.filter(teste => {
+        // Testes iniciais ou universais sempre aparecem
+        if (teste.aplicavelPara === "todos" || !teste.aplicavelPara) {
+            return true;
+        }
+
+        // Se o usuário ainda não definiu Gram ou Forma, exibe os testes universais e de nível 1
+        if (!gramAtual || !formaAtual) {
+            return teste.nivel === 1;
+        }
+
+        const regra = teste.aplicavelPara;
+
+        // Valida se o Gram bate
+        const gramBate = !regra.gram || regra.gram === gramAtual;
+
+        // Valida se a Forma bate (aceita string única ou array)
+        let formaBate = true;
+        if (regra.forma) {
+            formaBate = Array.isArray(regra.forma)
+                ? regra.forma.includes(formaAtual)
+                : regra.forma === formaAtual;
+        }
+
+        return gramBate && formaBate;
+    });
 }
 
-function getTestesDisponiveis(){
-    return testesMicrobiologicos;
-}
-
-function getTestesPorGrupo(grupo){
-    return testesMicrobiologicos.filter(
-        teste => teste.grupo === grupo
-    );
-}
-
+// Exporta a função para ser consumida no frontend
 window.testesMicrobiologicos = testesMicrobiologicos;
-window.getTesteByNome = getTesteByNome;
-window.getTestesDisponiveis = getTestesDisponiveis;
-window.getTestesPorGrupo = getTestesPorGrupo;
+window.obterTestesRelevantes = obterTestesRelevantes;
