@@ -313,7 +313,7 @@ const testesMicrobiologicos = [
     grupo: "Antimicrobianos",
     resultadosPossiveis: ["Sensível", "Resistente", "Não se aplica"],
     descricao: "Novobiocina",
-    peso: 50,
+    peso: 70,
     nivel: 5,
     modo: "pontuacao",
     // Diferencial para Staphylococcus saprophyticus
@@ -326,7 +326,7 @@ const testesMicrobiologicos = [
     grupo: "Antimicrobianos",
     resultadosPossiveis: ["Sensível", "Resistente", "Não se aplica"],
     descricao: "Optoquina",
-    peso: 50,
+    peso: 70,
     nivel: 5,
     modo: "pontuacao",
     // Diferencial para Streptococcus pneumoniae
