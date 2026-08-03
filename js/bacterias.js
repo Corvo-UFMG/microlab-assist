@@ -684,10 +684,8 @@ const bacterias = [
       "VRE": "Não se aplica",
       "Novobiocina": "Resistente",// Nota de bancada: Resistente à Novobiocina (teste definitivo para diferenciar de S. epidermidis)
       "Optoquina": "Não se aplica",
-      "Novobiocina": "Não se aplica",
       "Maltose": "Não se aplica"
-     
-    }
+     }
    },
    {
     "nome": "Streptococcus pneumoniae",
