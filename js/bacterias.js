@@ -632,7 +632,6 @@ const bacterias = [
       "VRE": "Não se aplica",
       "Optoquina": "Não se aplica",
       "Novobiocina": "Sensível",
-      "Novobiocina": "Não se aplica",
       "Maltose": "Não se aplica"
     }
   },
