@@ -4,15 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MicroLab Assist</title>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-B25XV503XB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-B25XV503XB');
-</script>
   <style>
     * {
       margin: 0;
@@ -163,46 +154,10 @@
         </label>
       </div>
     </div>
-
     <button class="btn" onclick="iniciarIdentificacao()">
       Iniciar Identificação
     </button>
   </div>
-
-  <script>
-    function iniciarIdentificacao() {
-      const selecionado = document.querySelector('input[name="material"]:checked');
-      
-      if (!selecionado) {
-        alert("Por favor, selecione um tipo de material.");
-        return;
-      }
-
-      const material = selecionado.parentElement.textContent.trim();
-      
-      // Salva o material escolhido para usar na próxima tela
-      sessionStorage.setItem('materialSelecionado', material);
-      
-      // Se for urina, ativa o protocolo
-      if (selecionado.value === "urina") {
-
-    sessionStorage.setItem("mostrarAssistente", "urina");
-}
-
-    // Abre normalmente a investigação
-window.location.href = "investigacao.html";
-    }
-/*
- * Micro Lab Assist
- * Sistema Especialista para Identificação Microbiológica
- *
- * Copyright (C) 2026 Júlio César Martins
- *
- * Licensed under the GNU Affero General Public License v3.0
- *
- * Repositório:
- * https://github.com/Corvo-UFMG/MicroLab-Assist
- */
-  </script>
+<script src="js/index.js"></script>  
 </body>
 </html>
