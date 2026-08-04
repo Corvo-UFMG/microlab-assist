@@ -357,7 +357,7 @@
       if (typeof gerarHipoteses === "function") {
         const lista = gerarHipoteses(resultados);
         if (lista && lista.length > 0) {
-          lista.slice(0, 5).forEach(h => {
+          lista.slice(0, 3).forEach(h => {
             hipotesesDiv.innerHTML += `
               <div class="hipotese-linha">
                 <span>${h.nome} <span class="bacteria-grupo">(${h.grupo || 'Sem grupo'})</span></span>
